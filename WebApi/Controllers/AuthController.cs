@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Domain.Dtos;
-using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Services;
@@ -27,7 +26,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            User user = await _authService.GetUser(userLoginDto.Username, userLoginDto.Password);
+            UserBasicDto user = await _authService.GetUser(userLoginDto.Username, userLoginDto.Password);
             string token = GenerateJwt(user);
 
             return Ok(token);
@@ -38,20 +37,34 @@ public class AuthController : ControllerBase
         }
     }
 
-    private List<Claim> GenerateClaims(User user)
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] UserCreateDto userCreateDto)
+    {
+        try
+        {
+            UserBasicDto userBasicDto = await _authService.CreateUser(userCreateDto);
+            return Ok(userBasicDto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    private IEnumerable<Claim> GenerateClaims(UserBasicDto userBasicDto)
     {
         return new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, _config["Jwt:Subject"]),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-            new(ClaimTypes.Name, user.Username)
+            new(ClaimTypes.Name, userBasicDto.Username)
         };
     }
 
-    private string GenerateJwt(User user)
+    private string GenerateJwt(UserBasicDto userBasicDto)
     {
-        List<Claim> claims = GenerateClaims(user);
+        IEnumerable<Claim> claims = GenerateClaims(userBasicDto);
 
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
         SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha512);

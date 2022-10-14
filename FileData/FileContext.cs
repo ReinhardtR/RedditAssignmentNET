@@ -40,6 +40,7 @@ public class FileContext
         {
             WriteIndented = true
         });
+
         File.WriteAllText(FilePath, serialized);
         _dataContainer = null;
     }

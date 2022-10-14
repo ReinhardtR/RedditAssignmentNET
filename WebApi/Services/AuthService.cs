@@ -1,54 +1,25 @@
-using System.ComponentModel.DataAnnotations;
-using Domain.Models;
+using Application.LogicInterfaces;
+using Domain.Dtos;
 
 namespace WebApi.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IList<User> users = new List<User>
+    private readonly IUserLogic _userLogic;
+
+    public AuthService(IUserLogic userLogic)
     {
-        new()
-        {
-            Username = "Reinhardt",
-            Password = "123"
-        },
-        new()
-        {
-            Username = "Dva",
-            Password = "321"
-        },
-        new()
-        {
-            Username = "Winston",
-            Password = "456"
-        },
-        new()
-        {
-            Username = "Zarya",
-            Password = "654"
-        }
-    };
-
-    public Task<User> GetUser(string username, string password)
-    {
-        User? existingUser = users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-
-        if (existingUser == null) throw new Exception("User with this username does not exist");
-
-        if (!existingUser.Password.Equals(password)) throw new Exception("Invalid password");
-
-        return Task.FromResult(existingUser);
+        _userLogic = userLogic;
     }
 
-    public Task RegisterUser(User user)
+    public async Task<UserBasicDto> GetUser(string username, string password)
     {
-        if (string.IsNullOrEmpty(user.Username)) throw new ValidationException("Username is required");
+        UserBasicDto existingUser = await _userLogic.GetByUsernameAndPasswordAsync(username, password);
+        return new UserBasicDto(existingUser.Username);
+    }
 
-        if (string.IsNullOrEmpty(user.Password)) throw new ValidationException("Password is required");
-
-        // Persistence
-        users.Add(user);
-
-        return Task.CompletedTask;
+    public async Task<UserBasicDto> CreateUser(UserCreateDto userCreateDto)
+    {
+        return await _userLogic.CreateAsync(userCreateDto);
     }
 }

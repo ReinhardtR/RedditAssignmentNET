@@ -3,8 +3,9 @@ using System.Security.Claims;
 using System.Text.Json;
 using Domain.Dtos;
 using Domain.Models;
+using HttpClients.Interfaces;
 
-namespace BlazorWasm.Services.Http;
+namespace HttpClients.Clients;
 
 public class JwtAuthService : IAuthService
 {
@@ -45,9 +46,9 @@ public class JwtAuthService : IAuthService
         return Task.CompletedTask;
     }
 
-    public async Task RegisterAsync(User user)
+    public async Task CreateAsync(User user)
     {
-        HttpResponseMessage response = await _client.PostAsJsonAsync("https://localhost:7212/auth/register", user);
+        HttpResponseMessage response = await _client.PostAsJsonAsync("https://localhost:7212/auth", user);
 
         if (!response.IsSuccessStatusCode)
         {

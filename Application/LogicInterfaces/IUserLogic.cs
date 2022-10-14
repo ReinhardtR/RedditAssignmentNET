@@ -1,9 +1,11 @@
 using Domain.Dtos;
-using Domain.Models;
 
 namespace Application.LogicInterfaces;
 
 public interface IUserLogic
 {
-    Task<User> CreateAsync(UserCreateDto userToCreate);
+    Task<UserBasicDto> CreateAsync(UserCreateDto userToCreate);
+    Task<UserBasicDto?> GetByUsernameAsync(string username);
+    Task<UserBasicDto> GetByUsernameAndPasswordAsync(string username, string password);
+    Task<IEnumerable<UserBasicDto>> GetAllAsync();
 }

@@ -1,6 +1,5 @@
 using Application.LogicInterfaces;
 using Domain.Dtos;
-using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -16,18 +15,20 @@ public class UsersController : ControllerBase
         _userLogic = userLogic;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<User>> CreateAsync(UserCreateDto dto)
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserBasicDto>>> GetAll()
     {
-        try
-        {
-            User user = await _userLogic.CreateAsync(dto);
-            return Created($"/users/{user.Username}", user);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
-        }
+        IEnumerable<UserBasicDto> users = await _userLogic.GetAllAsync();
+        return Ok(users);
+    }
+
+    [HttpGet("{username}")]
+    public async Task<ActionResult<UserBasicDto>> GetByUsername(string username)
+    {
+        UserBasicDto? user = await _userLogic.GetByUsernameAsync(username);
+
+        if (user == null) return NotFound($"User with username {username} not found");
+
+        return Ok(user);
     }
 }

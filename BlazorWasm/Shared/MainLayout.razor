@@ -1,0 +1,28 @@
+@inherits LayoutComponentBase
+
+<Layout Style="min-height: 100vh">
+    <Header>
+        <Row Justify="space-between" Align="middle">
+            <Text Strong Style="color: white; font-size: large">Read It</Text>
+            <Button OnClick="@ShowAuthModal">Login</Button>
+        </Row>
+    </Header>
+    <AuthModal Visible="@isAuthModalVisible" HideModalHandler="@HideAuthModal"/>
+    <Content>@Body</Content>
+    <Footer>Reinhardt Rijna 2022</Footer>
+</Layout>
+
+@code {
+    private bool isAuthModalVisible;
+
+    private void ShowAuthModal()
+    {
+        isAuthModalVisible = true;
+    }
+
+    private void HideAuthModal()
+    {
+        isAuthModalVisible = false;
+    }
+
+}
