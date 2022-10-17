@@ -1,12 +1,27 @@
 ﻿@page "/"
 @using HttpClients.Interfaces
+@using Domain.Dtos
+@inject IPostsService PostsService
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
 
-<h1>Home</h1>
+<div>
+    @foreach (PostBasicDto post in posts)
+    {
+        <div>
+            @post.Title
+        </div>
+    }
+</div>
 
 @code {
+    IEnumerable<PostBasicDto> posts = Enumerable.Empty<PostBasicDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await PostsService.GetAllPostsAsync();
+    }
 
 }

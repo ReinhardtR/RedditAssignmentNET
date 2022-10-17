@@ -1,0 +1,64 @@
+@using HttpClients.Interfaces
+@using System.ComponentModel.DataAnnotations
+@using Domain.Dtos
+@inject IAuthService AuthService
+@inject IDialogService DialogService
+
+<EditForm Model="model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator/>
+
+    <MudStack Spacing="4">
+        <MudTextField Label="Username" Variant="Variant.Outlined" @bind-Value="model.Username" For="() => model.Username"/>
+        <MudTextField Label="Password" Variant="Variant.Outlined" InputType="InputType.Password" @bind-Value="model.Password" For="() => model.Password"/>
+
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" ButtonType="ButtonType.Submit">Sign In</MudButton>
+
+        @if (!context.GetValidationMessages().ToList().Count.Equals(0) || apiError != null)
+        {
+            <MudAlert Severity="Severity.Error">
+                <MudText Color="@Color.Error">
+                    @apiError
+                    <ValidationSummary/>
+                </MudText>
+            </MudAlert>
+        }
+    </MudStack>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public Action OnSuccess { get; set; }
+
+    public class Model
+    {
+        [Required]
+        [StringLength(15, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 15 characters.")]
+        public string Username { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+    }
+
+    private Model model = new();
+    private string? apiError;
+
+    private async void OnValidSubmit()
+    {
+        apiError = null;
+
+        try
+        {
+            await AuthService.LoginAsync(new UserLoginDto(model.Username, model.Password));
+
+            OnSuccess?.Invoke();
+        }
+        catch (Exception e)
+        {
+            apiError = e.Message;
+        }
+
+        StateHasChanged();
+    }
+
+}

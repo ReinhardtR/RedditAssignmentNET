@@ -1,28 +1,44 @@
 @inherits LayoutComponentBase
 
-<Layout Style="min-height: 100vh">
-    <Header>
-        <Row Justify="space-between" Align="middle">
-            <Text Strong Style="color: white; font-size: large">Read It</Text>
-            <Button OnClick="@ShowAuthModal">Login</Button>
-        </Row>
-    </Header>
-    <AuthModal Visible="@isAuthModalVisible" HideModalHandler="@HideAuthModal"/>
-    <Content>@Body</Content>
-    <Footer>Reinhardt Rijna 2022</Footer>
-</Layout>
+@inject IDialogService DialogService
+
+<MudThemeProvider/>
+<MudDialogProvider
+    FullWidth="true"
+    MaxWidth="MaxWidth.Small"/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar>
+        <MudText Typo="Typo.h6">Read It</MudText>
+
+        <MudSpacer/>
+
+        <AuthorizeView>
+            <NotAuthorized>
+                <MudButton OnClick="@ShowAuthModal" Variant="Variant.Filled" Color="Color.Secondary">Sign In</MudButton>
+            </NotAuthorized>
+            <Authorized>
+                <MudStack Row="true" Spacing="2" Justify="Justify.Center" AlignItems="AlignItems.Center">
+                    <MudAvatar Color="Color.Secondary">@context.User.Identity.Name[0]</MudAvatar>
+                    <MudText Typo="Typo.button">@context.User.Identity.Name</MudText>
+                </MudStack>
+            </Authorized>
+        </AuthorizeView>
+    </MudAppBar>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
 
 @code {
-    private bool isAuthModalVisible;
 
     private void ShowAuthModal()
     {
-        isAuthModalVisible = true;
-    }
-
-    private void HideAuthModal()
-    {
-        isAuthModalVisible = false;
+        DialogService.Show<AuthModal>();
     }
 
 }

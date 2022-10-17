@@ -1,18 +1,18 @@
 namespace Domain.Models;
 
-public class Thread
+public class Post
 {
-    public Thread(User author, string title, string content)
+    public Post(User author, string title, string content)
     {
         Author = author;
         Title = title;
         Content = content;
-        Date = DateTime.Now;
+        CreatedAt = DateTime.Now;
     }
 
-    public int Id { get; set; }
-    public DateTime Date { get; set; }
-
+    // Is generated in PostFileDao
+    public string Id { get; set; }
+    public DateTime CreatedAt { get; set; }
     public User Author { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }

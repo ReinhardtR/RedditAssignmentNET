@@ -33,22 +33,20 @@ public class UserLogic : IUserLogic
         return new UserBasicDto(existingUser.Username);
     }
 
-    public async Task<UserBasicDto> CreateAsync(UserCreateDto userCreateDto)
+    public async Task<UserBasicDto> CreateAsync(UserCreateDto dto)
     {
-        User? existingUser = await _userDao.GetByUsernameAsync(userCreateDto.Username);
+        User? existingUser = await _userDao.GetByUsernameAsync(dto.Username);
         if (existingUser != null) throw new Exception("Username already taken!");
 
-        ValidateData(userCreateDto);
+        ValidateData(dto);
 
         User newUser = await _userDao.CreateAsync(new User
         {
-            Username = userCreateDto.Username,
-            Password = userCreateDto.Password
+            Username = dto.Username,
+            Password = dto.Password
         });
 
-        UserBasicDto userBasicDto = new(newUser.Username);
-
-        return userBasicDto;
+        return new UserBasicDto(newUser.Username);
     }
 
     public async Task<IEnumerable<UserBasicDto>> GetAllAsync()
@@ -58,9 +56,9 @@ public class UserLogic : IUserLogic
         return users.Select(user => new UserBasicDto(user.Username));
     }
 
-    private static void ValidateData(UserCreateDto userToCreate)
+    private static void ValidateData(UserCreateDto dto)
     {
-        string username = userToCreate.Username;
+        string username = dto.Username;
 
         if (string.IsNullOrEmpty(username)) throw new ValidationException("Username is required");
 
@@ -68,6 +66,6 @@ public class UserLogic : IUserLogic
 
         if (username.Length > 15) throw new ValidationException("Username must be less than 16 characters!");
 
-        if (string.IsNullOrEmpty(userToCreate.Password)) throw new ValidationException("Password is required");
+        if (string.IsNullOrEmpty(dto.Password)) throw new ValidationException("Password is required");
     }
 }

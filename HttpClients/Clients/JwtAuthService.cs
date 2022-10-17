@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text.Json;
 using Domain.Dtos;
-using Domain.Models;
 using HttpClients.Interfaces;
 
 namespace HttpClients.Clients;
@@ -15,14 +14,8 @@ public class JwtAuthService : IAuthService
 
     public Action<ClaimsPrincipal> OnAuthStateChanged { get; set; } = null!;
 
-    public async Task LoginAsync(string username, string password)
+    public async Task LoginAsync(UserLoginDto userLoginDto)
     {
-        UserLoginDto userLoginDto = new()
-        {
-            Username = username,
-            Password = password
-        };
-
         HttpResponseMessage response = await _client.PostAsJsonAsync(
             "https://localhost:7212/auth/login",
             userLoginDto
@@ -46,9 +39,9 @@ public class JwtAuthService : IAuthService
         return Task.CompletedTask;
     }
 
-    public async Task CreateAsync(User user)
+    public async Task CreateAsync(UserCreateDto userCreateDto)
     {
-        HttpResponseMessage response = await _client.PostAsJsonAsync("https://localhost:7212/auth", user);
+        HttpResponseMessage response = await _client.PostAsJsonAsync("https://localhost:7212/auth", userCreateDto);
 
         if (!response.IsSuccessStatusCode)
         {

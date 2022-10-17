@@ -27,8 +27,6 @@ public class UsersController : ControllerBase
     {
         UserBasicDto? user = await _userLogic.GetByUsernameAsync(username);
 
-        if (user == null) return NotFound($"User with username {username} not found");
-
         return Ok(user);
     }
 }

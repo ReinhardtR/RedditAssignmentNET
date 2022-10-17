@@ -40,9 +40,11 @@ AuthorizationPolicies.AddPolicies(builder.Services);
 // Add File Data Services
 builder.Services.AddScoped<FileContext>();
 builder.Services.AddScoped<IUserDao, UserFileDao>();
+builder.Services.AddScoped<IPostDao, PostFileDao>();
 
 // Add Logic Services
 builder.Services.AddScoped<IUserLogic, UserLogic>();
+builder.Services.AddScoped<IPostLogic, PostLogic>();
 
 // Build
 WebApplication app = builder.Build();
