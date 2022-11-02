@@ -1,17 +1,15 @@
-using Domain.Models;
-
 namespace Domain.Dtos;
 
 public class PostCreateDto
 {
-    public PostCreateDto(User author, string title, string content)
+    public PostCreateDto(string authorUsername, string title, string content)
     {
-        Author = author;
+        AuthorUsername = authorUsername;
         Title = title;
         Content = content;
     }
 
-    public User Author { get; set; }
+    public string AuthorUsername { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
 }

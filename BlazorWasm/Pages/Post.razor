@@ -1,0 +1,55 @@
+@page "/Post/{id}"
+@using Humanizer
+@using HttpClients.Interfaces
+@using Domain.Dtos
+@inject IPostsService PostsService
+
+<MudStack Spacing="4" AlignItems="AlignItems.Stretch">
+    @if (post == null && errorLabel == null)
+    {
+        <MudStack AlignItems="AlignItems.Center">
+            <MudText>Loading Post</MudText>
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+        </MudStack>
+    }
+    else if (errorLabel != null)
+    {
+        <MudAlert Severity="Severity.Error">
+            @errorLabel
+        </MudAlert>
+    }
+    else if (post != null)
+    {
+        <MudPaper Outlined="true" Class="pa-4" Width="100%">
+            <MudStack Spacing="3" AlignItems="AlignItems.Start">
+                <MudText Typo="Typo.h3">@post.Title</MudText>
+                <MudText Typo="Typo.caption">@post.CreatedAt.Humanize() • @post.CreatedAt</MudText>
+                <MudText Typo="Typo.body1">@post.Content</MudText>
+            </MudStack>
+        </MudPaper>
+    }
+</MudStack>
+
+@code{
+
+    [Parameter]
+    public string id { get; set; }
+
+    private PostFullDto? post;
+    private string? errorLabel;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            errorLabel = null;
+            post = await PostsService.GetPostByIdAsync(id);
+        }
+        catch (Exception e)
+        {
+            errorLabel = e.Message;
+            post = null;
+        }
+    }
+
+}

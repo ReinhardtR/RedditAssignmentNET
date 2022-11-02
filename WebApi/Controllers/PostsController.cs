@@ -1,5 +1,6 @@
 using Application.LogicInterfaces;
 using Domain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -25,16 +26,24 @@ public class PostsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<PostFullDto>> GetFullById(string id)
     {
-        PostFullDto? post = await _postLogic.GetFullByIdAsync(id);
-
-        if (post == null) return NotFound($"Post with id {id} not found");
-
-        return Ok(post);
+        try
+        {
+            PostFullDto post = await _postLogic.GetFullByIdAsync(id);
+            return Ok(post);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<PostBasicDto>> Create([FromBody] PostCreateDto postCreateDto)
     {
+        if (!postCreateDto.AuthorUsername.Equals(User.Identity?.Name))
+            return BadRequest("You can't create posts for other users");
+
         try
         {
             PostBasicDto post = await _postLogic.CreateAsync(postCreateDto);

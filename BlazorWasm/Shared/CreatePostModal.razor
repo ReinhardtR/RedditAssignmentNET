@@ -1,0 +1,77 @@
+@using HttpClients.Interfaces
+@using System.ComponentModel.DataAnnotations
+@using Domain.Dtos
+@inject IPostsService PostsService
+@inject IAuthService AuthService
+
+<MudDialog>
+    <TitleContent>Create a Post</TitleContent>
+    <DialogContent>
+        <EditForm Model="model" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator/>
+
+            <MudStack Spacing="4">
+                <MudTextField Label="Title" AutoFocus="true" Variant="Variant.Outlined" @bind-Value="model.Title" For="() => model.Title"/>
+                <MudTextField Label="Content" Lines="10" Variant="Variant.Outlined" @bind-Value="model.Content" For="() => model.Content"/>
+
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" ButtonType="ButtonType.Submit">Post</MudButton>
+
+                @if (!context.GetValidationMessages().ToList().Count.Equals(0) || apiError != null)
+                {
+                    <MudAlert Severity="Severity.Error">
+                        <MudText Color="@Color.Error">
+                            @apiError
+                            <ValidationSummary/>
+                        </MudText>
+                    </MudAlert>
+                }
+            </MudStack>
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; } = null!;
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    public class Model
+    {
+        [Required]
+        [StringLength(128, MinimumLength = 6, ErrorMessage = "Title must be between 6 and 128 characters")]
+        public string Title { get; set; }
+
+        [Required]
+        public string Content { get; set; }
+    }
+
+    private readonly Model model = new();
+
+    private string? apiError;
+
+    private async void OnValidSubmit()
+    {
+        try
+        {
+            AuthenticationState authState = await AuthState;
+            string? username = authState.User.Identity?.Name;
+
+            if (username == null)
+            {
+                throw new Exception("User is not authenticated");
+            }
+
+            await PostsService.CreatePostAsync(new PostCreateDto(username, model.Title, model.Content));
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception e)
+        {
+            apiError = e.Message;
+        }
+    }
+
+}

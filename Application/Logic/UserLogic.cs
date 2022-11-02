@@ -15,18 +15,20 @@ public class UserLogic : IUserLogic
         _userDao = userDao;
     }
 
-    public async Task<UserBasicDto?> GetByUsernameAsync(string username)
+    public async Task<UserBasicDto> GetByUsernameAsync(string username)
     {
         User? user = await _userDao.GetByUsernameAsync(username);
 
-        return user == null ? null : new UserBasicDto(user.Username);
+        if (user == null) throw new Exception($"User with username '{username}' not found");
+
+        return new UserBasicDto(user.Username);
     }
 
     public async Task<UserBasicDto> GetByUsernameAndPasswordAsync(string username, string password)
     {
         User? existingUser = await _userDao.GetByUsernameAsync(username);
 
-        if (existingUser == null) throw new Exception("User with this username does not exist");
+        if (existingUser == null) throw new Exception($"User with username '{username}' not found");
 
         if (!existingUser.Password.Equals(password)) throw new Exception("Invalid password");
 

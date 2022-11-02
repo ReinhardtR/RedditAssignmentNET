@@ -17,10 +17,8 @@
         @if (!context.GetValidationMessages().ToList().Count.Equals(0) || apiError != null)
         {
             <MudAlert Severity="Severity.Error">
-                <MudText Color="@Color.Error">
-                    @apiError
-                    <ValidationSummary/>
-                </MudText>
+                @apiError
+                <ValidationSummary/>
             </MudAlert>
         }
     </MudStack>

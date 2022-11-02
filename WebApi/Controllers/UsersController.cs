@@ -25,8 +25,14 @@ public class UsersController : ControllerBase
     [HttpGet("{username}")]
     public async Task<ActionResult<UserBasicDto>> GetByUsername(string username)
     {
-        UserBasicDto? user = await _userLogic.GetByUsernameAsync(username);
-
-        return Ok(user);
+        try
+        {
+            UserBasicDto user = await _userLogic.GetByUsernameAsync(username);
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
     }
 }

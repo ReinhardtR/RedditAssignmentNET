@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text.Json;
@@ -8,9 +9,14 @@ namespace HttpClients.Clients;
 
 public class JwtAuthService : IAuthService
 {
-    private readonly HttpClient _client = new();
+    private readonly HttpClient _client;
 
-    public static string? Jwt { get; private set; } = "";
+    public JwtAuthService(HttpClient client)
+    {
+        _client = client;
+    }
+
+    public static string? Jwt { get; private set; }
 
     public Action<ClaimsPrincipal> OnAuthStateChanged { get; set; } = null!;
 
@@ -26,8 +32,10 @@ public class JwtAuthService : IAuthService
         if (!response.IsSuccessStatusCode) throw new Exception(responseContent);
 
         Jwt = responseContent;
+        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Jwt);
 
         ClaimsPrincipal principal = CreateClaimsPrincipal();
+
         OnAuthStateChanged(principal);
     }
 

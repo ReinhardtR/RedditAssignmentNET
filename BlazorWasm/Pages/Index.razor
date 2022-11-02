@@ -1,27 +1,103 @@
 ﻿@page "/"
+@using Humanizer
 @using HttpClients.Interfaces
 @using Domain.Dtos
-@inject IPostsService PostsService
-@inject IAuthService AuthService
 @inject NavigationManager NavigationManager
+@inject IPostsService PostsService
+@inject IDialogService DialogService
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Read It</PageTitle>
 
-<div>
-    @foreach (PostBasicDto post in posts)
+<MudStack Spacing="8" AlignItems="AlignItems.Stretch">
+    <MudStack AlignItems="AlignItems.Center">
+        <AuthorizeView>
+            <NotAuthorized>
+                <MudAlert Severity="Severity.Info">Login to create a post</MudAlert>
+            </NotAuthorized>
+            <Authorized>
+                <MudFab OnClick="ShowCreatePostModal" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Add" Class="z-90" Style="position: fixed; right: 20px; bottom: 20px"/>
+            </Authorized>
+        </AuthorizeView>
+    </MudStack>
+
+
+    @if (posts == null && errorLabel == null)
     {
-        <div>
-            @post.Title
-        </div>
+        <MudStack AlignItems="AlignItems.Center">
+            <MudText>Loading Posts</MudText>
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+        </MudStack>
     }
-</div>
+    else if (errorLabel != null)
+    {
+        <MudAlert Severity="Severity.Error">
+            @errorLabel
+        </MudAlert>
+    }
+    else if (posts != null)
+    {
+        <MudStack AlignItems="AlignItems.Stretch" Spacing="4">
+            @foreach (PostBasicDto post in posts)
+            {
+                <MudButton OnClick="() => NavigateToPost(post.Id)">
+                    <MudPaper Outlined="true" Class="pa-4" Width="100%">
+                        <MudStack Spacing="3" AlignItems="AlignItems.Start">
+                            <MudStack Row="true" Justify="Justify.Center" Spacing="2">
+                                <MudAvatar Color="Color.Secondary" Size="Size.Small">@post.AuthorUsername[0]</MudAvatar>
+
+                                <MudStack Row="true" Spacing="1" AlignItems="AlignItems.Center">
+                                    <MudText>@post.AuthorUsername</MudText>
+                                    <MudText Typo="Typo.caption">• @post.CreatedAt.Humanize()</MudText>
+                                </MudStack>
+                            </MudStack>
+                            <MudText Typo="Typo.h5">@post.Title</MudText>
+                        </MudStack>
+                    </MudPaper>
+                </MudButton>
+            }
+        </MudStack>
+    }
+</MudStack>
+
 
 @code {
-    IEnumerable<PostBasicDto> posts = Enumerable.Empty<PostBasicDto>();
+    private ICollection<PostBasicDto>? posts;
+    private string? errorLabel;
 
     protected override async Task OnInitializedAsync()
     {
-        posts = await PostsService.GetAllPostsAsync();
+        await FetchPosts();
+    }
+
+    private async Task FetchPosts()
+    {
+        try
+        {
+            errorLabel = null;
+            ICollection<PostBasicDto> fetchedPosts = await PostsService.GetAllPostsAsync();
+            posts = fetchedPosts.OrderByDescending(post => post.CreatedAt).ToList();
+        }
+        catch (Exception e)
+        {
+            errorLabel = e.Message;
+            posts = null;
+        }
+    }
+
+    private void NavigateToPost(string id)
+    {
+        NavigationManager.NavigateTo($"/post/{id}");
+    }
+
+    private async void ShowCreatePostModal()
+    {
+        IDialogReference dialog = DialogService.Show<CreatePostModal>();
+        DialogResult result = await dialog.Result;
+
+        if (result.Cancelled) return;
+
+        await FetchPosts();
+        StateHasChanged();
     }
 
 }

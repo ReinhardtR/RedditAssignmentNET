@@ -1,10 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.LogicInterfaces;
 using Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using WebApi.Services;
 
 namespace WebApi.Controllers;
 
@@ -12,13 +12,13 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
     private readonly IConfiguration _config;
+    private readonly IUserLogic _userLogic;
 
-    public AuthController(IConfiguration config, IAuthService authService)
+    public AuthController(IConfiguration config, IUserLogic userLogic)
     {
         _config = config;
-        _authService = authService;
+        _userLogic = userLogic;
     }
 
     [HttpPost("login")]
@@ -26,7 +26,8 @@ public class AuthController : ControllerBase
     {
         try
         {
-            UserBasicDto user = await _authService.GetUser(userLoginDto.Username, userLoginDto.Password);
+            UserBasicDto user =
+                await _userLogic.GetByUsernameAndPasswordAsync(userLoginDto.Username, userLoginDto.Password);
             string token = GenerateJwt(user);
 
             return Ok(token);
@@ -42,7 +43,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            UserBasicDto userBasicDto = await _authService.CreateUser(userCreateDto);
+            UserBasicDto userBasicDto = await _userLogic.CreateAsync(userCreateDto);
             return Ok(userBasicDto);
         }
         catch (Exception e)

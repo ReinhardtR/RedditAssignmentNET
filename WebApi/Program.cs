@@ -7,7 +7,6 @@ using FileData;
 using FileData.Daos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using WebApi.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -33,8 +32,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-builder.Services.AddScoped<IAuthService, AuthService>();
-
 AuthorizationPolicies.AddPolicies(builder.Services);
 
 // Add File Data Services
@@ -56,18 +53,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials());
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseCors(x =>
-    x.AllowAnyMethod()
-        .AllowAnyHeader()
-        .SetIsOriginAllowed(origin => true)
-        .AllowCredentials()
-);
 
 app.Run();

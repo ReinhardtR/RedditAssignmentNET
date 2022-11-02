@@ -24,5 +24,127 @@
       "Username": "Reinhardt3",
       "Password": "123"
     }
+  ],
+  "Posts": [
+    {
+      "Id": "My first post-e7d44302",
+      "CreatedAt": "2022-10-17T17:37:58.090449+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "My first post",
+      "Content": "This is my first post"
+    },
+    {
+      "Id": "testmsld-7583e6e1",
+      "CreatedAt": "2022-10-17T18:13:00.393907+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "testmsld",
+      "Content": "aksdmaskd"
+    },
+    {
+      "Id": "Test2asd-93218333",
+      "CreatedAt": "2022-10-17T18:13:41.922522+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Test2asd",
+      "Content": "camskdasd"
+    },
+    {
+      "Id": "Let\u0027s see how this look with a longer title-6ebbbfd0",
+      "CreatedAt": "2022-10-18T17:46:22.384172+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Let\u0027s see how this look with a longer title",
+      "Content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam quam nulla porttitor massa id neque aliquam. Enim praesent elementum facilisis leo vel fringilla est ullamcorper eget. Quam adipiscing vitae proin sagittis nisl rhoncus mattis rhoncus. A pellentesque sit amet porttitor eget. Rhoncus dolor purus non enim praesent elementum facilisis leo. Amet venenatis urna cursus eget nunc scelerisque. Ultrices tincidunt arcu non sodales neque. Amet tellus cras adipiscing enim. Varius morbi enim nunc faucibus a pellentesque. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Sed nisi lacus sed viverra. Viverra adipiscing at in tellus integer. Ut tortor pretium viverra suspendisse potenti nullam ac. Leo integer malesuada nunc vel risus commodo viverra. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Diam maecenas ultricies mi eget mauris. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin nibh.  Aliquet eget sit amet tellus cras adipiscing enim eu turpis. Nullam ac tortor vitae purus faucibus. Aliquam sem et tortor consequat. Ornare aenean euismod elementum nisi quis eleifend quam adipiscing. Porttitor massa id neque aliquam vestibulum morbi. Condimentum id venenatis a condimentum vitae. Commodo ullamcorper a lacus vestibulum sed. Euismod in pellentesque massa placerat duis ultricies lacus sed. Viverra nibh cras pulvinar mattis nunc sed blandit libero. Vitae auctor eu augue ut lectus arcu bibendum at varius. Eu nisl nunc mi ipsum faucibus. Sed velit dignissim sodales ut eu sem integer vitae justo. Dignissim enim sit amet venenatis urna cursus eget. Gravida arcu ac tortor dignissim convallis aenean et tortor. Orci nulla pellentesque dignissim enim sit amet."
+    },
+    {
+      "Id": "Reinhardt-e3c58670",
+      "CreatedAt": "2022-10-18T17:52:57.043335+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Reinhardt",
+      "Content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam quam nulla porttitor massa id neque aliquam. Enim praesent elementum facilisis leo vel fringilla est ullamcorper eget. Quam adipiscing vitae proin sagittis nisl rhoncus mattis rhoncus. A pellentesque sit amet porttitor eget. Rhoncus dolor purus non enim praesent elementum facilisis leo. Amet venenatis urna cursus eget nunc scelerisque. Ultrices tincidunt arcu non sodales neque. Amet tellus cras adipiscing enim. Varius morbi enim nunc faucibus a pellentesque. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Sed nisi lacus sed viverra. Viverra adipiscing at in tellus integer. Ut tortor pretium viverra suspendisse potenti nullam ac. Leo integer malesuada nunc vel risus commodo viverra. Bibendum at varius vel pharetra vel turpis nunc eget lorem. Diam maecenas ultricies mi eget mauris. Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin nibh.\n\nAliquet eget sit amet tellus cras adipiscing enim eu turpis. Nullam ac tortor vitae purus faucibus. Aliquam sem et tortor consequat. Ornare aenean euismod elementum nisi quis eleifend quam adipiscing. Porttitor massa id neque aliquam vestibulum morbi. Condimentum id venenatis a condimentum vitae. Commodo ullamcorper a lacus vestibulum sed. Euismod in pellentesque massa placerat duis ultricies lacus sed. Viverra nibh cras pulvinar mattis nunc sed blandit libero. Vitae auctor eu augue ut lectus arcu bibendum at varius. Eu nisl nunc mi ipsum faucibus. Sed velit dignissim sodales ut eu sem integer vitae justo. Dignissim enim sit amet venenatis urna cursus eget. Gravida arcu ac tortor dignissim convallis aenean et tortor. Orci nulla pellentesque dignissim enim sit amet."
+    },
+    {
+      "Id": "Reinhardt-e09cc16d",
+      "CreatedAt": "2022-10-20T14:30:21.064451+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Reinhardt",
+      "Content": "test"
+    },
+    {
+      "Id": "new post!-e1dcfe9f",
+      "CreatedAt": "2022-10-20T14:41:09.098127+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "new post!",
+      "Content": "wow"
+    },
+    {
+      "Id": "Another one!-a561d50a",
+      "CreatedAt": "2022-10-20T14:41:37.321282+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Another one!",
+      "Content": "wow"
+    },
+    {
+      "Id": "Number two-d9e31bc3",
+      "CreatedAt": "2022-10-20T14:49:58.26695+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Number two",
+      "Content": "content!"
+    },
+    {
+      "Id": "Another three-5d8dd1c2",
+      "CreatedAt": "2022-10-20T14:50:25.238462+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Another three",
+      "Content": "three"
+    },
+    {
+      "Id": "get it-cfc78651",
+      "CreatedAt": "2022-10-20T14:53:07.652122+02:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "get it",
+      "Content": "ye"
+    },
+    {
+      "Id": "Reinhardt title-023b1cc8",
+      "CreatedAt": "2022-11-02T14:09:05.912688+01:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Reinhardt title",
+      "Content": "content!"
+    }
   ]
 }

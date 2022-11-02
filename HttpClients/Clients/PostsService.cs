@@ -14,25 +14,35 @@ public class PostsService : IPostsService
         _client = client;
     }
 
-    public async Task<IEnumerable<PostBasicDto>> GetAllPostsAsync()
+    public async Task<ICollection<PostBasicDto>> GetAllPostsAsync()
     {
         HttpResponseMessage response = await _client.GetAsync("https://localhost:7212/posts");
-
-        if (!response.IsSuccessStatusCode) throw new Exception("Something went wrong");
-
         string content = await response.Content.ReadAsStringAsync();
-        IEnumerable<PostBasicDto>? posts = JsonSerializer.Deserialize<IEnumerable<PostBasicDto>>(content);
 
-        return posts ?? Enumerable.Empty<PostBasicDto>();
+        if (!response.IsSuccessStatusCode) throw new Exception(content);
+
+
+        Console.WriteLine("CONTENT: " + content);
+        ICollection<PostBasicDto>? posts = JsonSerializer.Deserialize<ICollection<PostBasicDto>>(content,
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+        return posts ?? new List<PostBasicDto>();
     }
 
     public async Task<PostFullDto> GetPostByIdAsync(string id)
     {
         HttpResponseMessage response = await _client.GetAsync($"https://localhost:7212/posts/{id}");
-        if (!response.IsSuccessStatusCode) throw new Exception("Something went wrong");
-
         string content = await response.Content.ReadAsStringAsync();
-        PostFullDto? post = JsonSerializer.Deserialize<PostFullDto>(content);
+
+        if (!response.IsSuccessStatusCode) throw new Exception(content);
+
+        PostFullDto? post = JsonSerializer.Deserialize<PostFullDto>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
 
         if (post == null) throw new Exception("Something went wrong");
 
@@ -42,11 +52,14 @@ public class PostsService : IPostsService
     public async Task<PostBasicDto> CreatePostAsync(PostCreateDto dto)
     {
         HttpResponseMessage response = await _client.PostAsJsonAsync("https://localhost:7212/posts", dto);
-
-        if (!response.IsSuccessStatusCode) throw new Exception("Something went wrong");
-
         string content = await response.Content.ReadAsStringAsync();
-        PostBasicDto? post = JsonSerializer.Deserialize<PostBasicDto>(content);
+
+        if (!response.IsSuccessStatusCode) throw new Exception(content);
+
+        PostBasicDto? post = JsonSerializer.Deserialize<PostBasicDto>(content, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
 
         if (post == null) throw new Exception("Something went wrong");
 

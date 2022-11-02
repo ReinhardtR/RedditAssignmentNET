@@ -1,6 +1,9 @@
+@using HttpClients.Interfaces
 @inherits LayoutComponentBase
 
+@inject NavigationManager NavigationManager
 @inject IDialogService DialogService
+@inject IAuthService AuthService
 
 <MudThemeProvider/>
 <MudDialogProvider
@@ -10,19 +13,33 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudText Typo="Typo.h6">Read It</MudText>
+        <MudButton OnClick="NavigateToHome" Variant="Variant.Text" Style="color: white">
+            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+                <MudIcon Icon="@Icons.Filled.Forum"/>
+                <MudText Typo="Typo.h6">Read It</MudText>
+            </MudStack>
+        </MudButton>
 
         <MudSpacer/>
 
         <AuthorizeView>
             <NotAuthorized>
-                <MudButton OnClick="@ShowAuthModal" Variant="Variant.Filled" Color="Color.Secondary">Sign In</MudButton>
+                <MudButton OnClick="@ShowAuthModal" EndIcon="@Icons.Filled.Login" Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true">Login</MudButton>
             </NotAuthorized>
             <Authorized>
-                <MudStack Row="true" Spacing="2" Justify="Justify.Center" AlignItems="AlignItems.Center">
-                    <MudAvatar Color="Color.Secondary">@context.User.Identity.Name[0]</MudAvatar>
-                    <MudText Typo="Typo.button">@context.User.Identity.Name</MudText>
-                </MudStack>
+                <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+                    <ActivatorContent>
+                        <MudStack Row="true" Spacing="2" Justify="Justify.Center" AlignItems="AlignItems.Center">
+                            <MudAvatar Color="Color.Secondary">@context.User.Identity.Name[0]</MudAvatar>
+                            <MudText Typo="Typo.button">@context.User.Identity.Name</MudText>
+                        </MudStack>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudMenuItem Icon="@Icons.Filled.Logout" OnClick="LogoutHandler">
+                            Logout
+                        </MudMenuItem>
+                    </ChildContent>
+                </MudMenu>
             </Authorized>
         </AuthorizeView>
     </MudAppBar>
@@ -35,6 +52,16 @@
 </MudLayout>
 
 @code {
+
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private async Task LogoutHandler()
+    {
+        await AuthService.LogoutAsync();
+    }
 
     private void ShowAuthModal()
     {

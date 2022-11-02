@@ -29,9 +29,9 @@ public class UserFileDao : IUserDao
         return Task.FromResult(user);
     }
 
-    public Task<IEnumerable<User>> GetAllAsync()
+    public Task<ICollection<User>> GetAllAsync()
     {
-        return Task.FromResult(_context.Users.AsEnumerable());
+        return Task.FromResult(_context.Users);
     }
 
     // public Task<IEnumerable<User>> GetAsync(SearchUserParametersDto searchParameters)
