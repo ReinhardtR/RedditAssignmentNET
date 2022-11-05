@@ -2,7 +2,6 @@ using System.Text;
 using Application.DaoInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
-using Domain.Auth;
 using FileData;
 using FileData.Daos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -31,8 +30,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
-AuthorizationPolicies.AddPolicies(builder.Services);
 
 // Add File Data Services
 builder.Services.AddScoped<FileContext>();

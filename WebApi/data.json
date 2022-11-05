@@ -23,6 +23,10 @@
     {
       "Username": "Reinhardt3",
       "Password": "123"
+    },
+    {
+      "Username": "Tes",
+      "Password": "1"
     }
   ],
   "Posts": [
@@ -145,6 +149,16 @@
       },
       "Title": "Reinhardt title",
       "Content": "content!"
+    },
+    {
+      "Id": "Title of my post-e8feff8f",
+      "CreatedAt": "2022-11-05T21:06:19.412985+01:00",
+      "Author": {
+        "Username": "Reinhardt",
+        "Password": "123"
+      },
+      "Title": "Title of my post",
+      "Content": "Great content!"
     }
   ]
 }

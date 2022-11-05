@@ -11,7 +11,7 @@ public class UserLogic : IUserLogic
     private readonly IUserDao _userDao;
 
     public UserLogic(IUserDao userDao)
-    {
+    {   
         _userDao = userDao;
     }
 

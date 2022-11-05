@@ -33,16 +33,4 @@ public class UserFileDao : IUserDao
     {
         return Task.FromResult(_context.Users);
     }
-
-    // public Task<IEnumerable<User>> GetAsync(SearchUserParametersDto searchParameters)
-    // {
-    //     IEnumerable<User> users = _context.Users.AsEnumerable();
-    //
-    //     if (searchParameters.UsernameContains != null)
-    //         users = _context.Users.Where(u =>
-    //             u.Username.Contains(searchParameters.UsernameContains, StringComparison.OrdinalIgnoreCase)
-    //         );
-    //
-    //     return Task.FromResult(users);
-    // }
 }
