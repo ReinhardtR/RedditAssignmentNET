@@ -19,7 +19,11 @@ public class PostsService : IPostsService
         HttpResponseMessage response = await _client.GetAsync("https://localhost:7212/posts");
         string content = await response.Content.ReadAsStringAsync();
 
-        if (!response.IsSuccessStatusCode) throw new Exception(content);
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine(content);
+            throw new Exception(content);
+        }
 
 
         Console.WriteLine("CONTENT: " + content);
@@ -37,7 +41,11 @@ public class PostsService : IPostsService
         HttpResponseMessage response = await _client.GetAsync($"https://localhost:7212/posts/{id}");
         string content = await response.Content.ReadAsStringAsync();
 
-        if (!response.IsSuccessStatusCode) throw new Exception(content);
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine(content);
+            throw new Exception(content);
+        }
 
         PostFullDto? post = JsonSerializer.Deserialize<PostFullDto>(content, new JsonSerializerOptions
         {
@@ -54,7 +62,11 @@ public class PostsService : IPostsService
         HttpResponseMessage response = await _client.PostAsJsonAsync("https://localhost:7212/posts", dto);
         string content = await response.Content.ReadAsStringAsync();
 
-        if (!response.IsSuccessStatusCode) throw new Exception(content);
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine(content);
+            throw new Exception(content);
+        }
 
         PostBasicDto? post = JsonSerializer.Deserialize<PostBasicDto>(content, new JsonSerializerOptions
         {

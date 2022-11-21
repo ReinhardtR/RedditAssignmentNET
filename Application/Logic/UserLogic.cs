@@ -11,7 +11,7 @@ public class UserLogic : IUserLogic
     private readonly IUserDao _userDao;
 
     public UserLogic(IUserDao userDao)
-    {   
+    {
         _userDao = userDao;
     }
 
@@ -42,11 +42,8 @@ public class UserLogic : IUserLogic
 
         ValidateData(dto);
 
-        User newUser = await _userDao.CreateAsync(new User
-        {
-            Username = dto.Username,
-            Password = dto.Password
-        });
+        User userToCreate = new(dto.Username, dto.Password);
+        User newUser = await _userDao.CreateAsync(userToCreate);
 
         return new UserBasicDto(newUser.Username);
     }

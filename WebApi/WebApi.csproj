@@ -14,7 +14,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\FileData\FileData.csproj" />
+      <ProjectReference Include="..\EfcData\EfcData.csproj" />
     </ItemGroup>
 
 </Project>
